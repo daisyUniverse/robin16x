@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <!-- Made by robin universe to aid texture creation in gimp, which has no aseprite style texture previewer 😔 !-->
+    <title>Robin16x Texture Tile Preview</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+      #controls{
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+
+      #button {
+        background-color: #555555;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+
+    </style> 
+    <script>
+      Texture = "dirt";
+
+      function onLoad() {
+        zoomLevel = 5;
+        document.getElementById("Texture").value = Texture
+        document.body.style.imageRendering = "crisp-edges"
+        document.body.style.backgroundSize = "5%";
+        reloadBackground(Texture);
+        setInterval('reloadBackground(Texture)',5000)
+      }
+
+      function reloadBackground(txt) {
+        if (document.getElementById("autoreload").checked){
+          document.body.style.background = 'url(' + txt + '.png?'+ new Date().getTime() + ') repeat 0 0';
+          document.body.style.backgroundSize = zoomLevel + "%";
+          document.body.style.imageRendering = "crisp-edges"
+        }
+      }
+
+      function loadBackground(txt) {
+        document.body.style.background = 'url(' + txt + '.png?'+ new Date().getTime() + ') repeat 0 0';
+        document.body.style.backgroundSize = zoomLevel + "%";
+        document.body.style.imageRendering = "crisp-edges"
+      }
+
+      function zoom(lvl){
+        zoomLevel = zoomLevel + lvl;
+        document.body.style.backgroundSize = zoomLevel + "%";
+      }
+    </script>
+  </head>
+  <body style="background: url(dirt.png) repeat 0 0;" onload="onLoad();" onscroll="zoom();">
+    <div id="controls" style="color: white; background-color: rgba(0, 0, 0, 0.623); padding-top: .7%; padding-bottom: .7%; text-align: center;">
+    Texture Name
+    <input type="text" name="Texture" id="Texture"/>
+    <script>
+      var Texture;
+      document.getElementById("Texture")
+        .addEventListener("keyup", function(event) {
+          event.preventDefault();
+          if (event.keyCode === 13) {
+            Texture = document.getElementById("Texture").value;
+            loadBackground(Texture);
+          }
+        });
+    </script>
+      •  Automatically reload image
+    <input type="checkbox" id="autoreload" value="AutoReload">  •  Zoom
+    <input type="button" id="zoom" value="+" onclick="zoom(1)">
+    <input type="button" id="unzoom" value="-" onclick="zoom(-1)">
+    
+  </body>
+</html>
